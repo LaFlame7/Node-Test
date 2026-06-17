@@ -18,7 +18,7 @@ import User from "./User";
 const Employees = memo(() => {
   /////////////////////////////////////// VARIABLES ////////////////////////////////////////
   const dispatch = useDispatch();
-  const { employees, allEmployees, isFetching, error } = useSelector((state) => state.user);
+  const { employees, allEmployees, isFetching, error, loggedUser } = useSelector((state) => state.user);
   const columns = [
     {
       field: "uid",
@@ -77,15 +77,15 @@ const Employees = memo(() => {
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <div className="flex gap-[10px]">
-          <Tooltip placement="top" title="Delete" arrow>
-            {" "}
-            <PiTrashLight
-              onClick={() => handleOpenDeleteModal(params.row._id)}
-              className="cursor-pointer text-red-500 text-[23px] hover:text-red-400"
-            />
-          </Tooltip>
+          {loggedUser?.role === 'super_admin' && (
+            <Tooltip placement="top" title="Delete" arrow>
+              <PiTrashLight
+                onClick={() => handleOpenDeleteModal(params.row._id)}
+                className="cursor-pointer text-red-500 text-[23px] hover:text-red-400"
+              />
+            </Tooltip>
+          )}
           <Tooltip placement="top" title="Edit" arrow>
-            {" "}
             <CiEdit
               onClick={() => handleOpenEditModal(params.row)}
               className="cursor-pointer text-green-500 text-[23px] hover:text-green-600"

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Add, Close } from "@mui/icons-material";
 import { Path } from "../../utils";
 import { Chip, FormControl, Input, InputAdornment, Tooltip } from "@mui/material";
@@ -7,11 +8,12 @@ import { PiMagnifyingGlass } from "react-icons/pi";
 import { FiFilter } from "react-icons/fi";
 import CreateUser from "./CreateEmployee";
 import Filter from "./Filter";
-import { searchUserReducer } from "../../redux/reducer/user";
+import { searchEmployeeReducer, searchClientReducer } from "../../redux/reducer/user";
 
 const Topbar = ({ view, setView, setIsFiltered, isFiltered }) => {
 
   ///////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
   const pathArr = pathname.split("/").filter((item) => item != "");
   const showClientTopBar = !pathArr.includes("employees");
@@ -38,8 +40,11 @@ const Topbar = ({ view, setView, setIsFiltered, isFiltered }) => {
   }, [open]);
 
   ///////////////////////////////////////// FUNCTIONS ///////////////////////////////////////////////////
-  const handleSearch = (searchTerm) => {
-    dispatch(searchUserReducer(searchTerm));
+  const handleEmployeeSearch = (searchTerm) => {
+    dispatch(searchEmployeeReducer(searchTerm));
+  }
+  const handleClientSearch = (searchTerm) => {
+    dispatch(searchClientReducer(searchTerm));
   }
   const handleToggleFilters = () => {
     setOpenFilters((pre) => !pre);
@@ -74,6 +79,7 @@ const Topbar = ({ view, setView, setIsFiltered, isFiltered }) => {
                 <Input
                   name="search"
                   placeholder="Search Employees"
+                  onChange={(e) => handleEmployeeSearch(e.target.value)}
                   startAdornment={
                     <InputAdornment position="start">
                       <PiMagnifyingGlass className="text-[25px]" />
@@ -112,6 +118,7 @@ const Topbar = ({ view, setView, setIsFiltered, isFiltered }) => {
                   name="search"
                   fullWidth="true"
                   placeholder="Search Clients"
+                  onChange={(e) => handleClientSearch(e.target.value)}
                   startAdornment={
                     <InputAdornment position="start">
                       <PiMagnifyingGlass className="text-[25px]" />

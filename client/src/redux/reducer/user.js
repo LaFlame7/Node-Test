@@ -113,10 +113,10 @@ const usersSlice = createSlice({
             const { payload: filters } = action;
 
             const filteredEmployees = allEmployees.filter((employee) => {
-                if (filters.city && employee.city.toLowerCase() != filters.city.toLowerCase()) return false;
-                if (filters.martialStatus && employee.martialStatus.toLowerCase() != filters.martialStatus.toLowerCase()) return false;
-                if (filters.gender && employee.gender.toLowerCase() != filters.gender.toLowerCase()) return false;
-                if (filters.salaryType && employee?.salaryType.toLowerCase() != filters?.salaryType.toLowerCase()) return false;
+                if (filters.city && employee.city?.toLowerCase() != filters.city.toLowerCase()) return false;
+                if (filters.martialStatus && employee.martialStatus?.toLowerCase() != filters.martialStatus.toLowerCase()) return false;
+                if (filters.gender && employee.gender?.toLowerCase() != filters.gender.toLowerCase()) return false;
+                if (filters.salaryType && employee.salaryType?.toLowerCase() != filters.salaryType.toLowerCase()) return false;
                 return true;
             });
 
@@ -146,16 +146,24 @@ const usersSlice = createSlice({
             state.clients = filteredUsers;
         },
 
-        createClientReducer: (state, action) => { state.clients = [action.payload, ...state.clients] },
-        createEmployeeReducer: (state, action) => { state.employees = [action.payload, ...state.employees] },
+        createClientReducer: (state, action) => {
+            state.clients = [action.payload, ...state.clients]
+            state.allClients = [action.payload, ...state.allClients]
+        },
+        createEmployeeReducer: (state, action) => {
+            state.employees = [action.payload, ...state.employees]
+            state.allEmployees = [action.payload, ...state.allEmployees]
+        },
 
         updateUserReducer: (state, action) => {
             switch (action.payload.role) {
                 case 'client':
-                    state.clients = state.clients.map(c => c = c._id == action.payload._id ? action.payload : c)
+                    state.clients = state.clients.map(c => c._id == action.payload._id ? action.payload : c)
+                    state.allClients = state.allClients.map(c => c._id == action.payload._id ? action.payload : c)
                     break;
                 case 'employee':
-                    state.employees = state.employees.map(e => e = e._id == action.payload._id ? action.payload : e)
+                    state.employees = state.employees.map(e => e._id == action.payload._id ? action.payload : e)
+                    state.allEmployees = state.allEmployees.map(e => e._id == action.payload._id ? action.payload : e)
                     break;
                 default:
                     break;
@@ -165,9 +173,11 @@ const usersSlice = createSlice({
             switch (action.payload.role) {
                 case 'client':
                     state.clients = state.clients.filter(c => c._id != action.payload._id)
+                    state.allClients = state.allClients.filter(c => c._id != action.payload._id)
                     break;
                 case 'employee':
                     state.employees = state.employees.filter(e => e._id != action.payload._id)
+                    state.allEmployees = state.allEmployees.filter(e => e._id != action.payload._id)
                     break;
                 default:
                     break;
