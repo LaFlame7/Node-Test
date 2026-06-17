@@ -28,6 +28,11 @@ const FilterDrawer = ({ open, setOpen, setIsFiltered }) => {
     setFilters(initialFilterState)
     setOpen(false)
   }
+  const handleReset = () => {
+    setFilters(initialFilterState)
+    setIsFiltered(false)
+    setOpen(false)
+  }
   const handleChange = (field, value) => {
     setFilters(pre => ({ ...pre, [field]: value }))
   }
@@ -49,42 +54,43 @@ const FilterDrawer = ({ open, setOpen, setIsFiltered }) => {
           <Autocomplete
             size="small"
             disablePortal
-            id="combo-box-demo"
             options={pakistanCities}
-            onSelect={(e) => handleChange('city', e.target.value)}
+            value={filters.city || null}
+            onChange={(e, value) => handleChange('city', value || '')}
             className="w-full"
             renderInput={(params) => <TextField {...params} fullWidth label="City" />}
           />
           <Autocomplete
             size="small"
             disablePortal
-            id="combo-box-demo"
             options={["Online", "Cash", "Cheque", "Bank Transfer"]}
-            onSelect={(e) => handleChange('salaryType', e.target.value)}
+            value={filters.salaryType || null}
+            onChange={(e, value) => handleChange('salaryType', value || '')}
             className="w-full"
             renderInput={(params) => <TextField {...params} fullWidth label="Salary Type" />}
           />
           <Autocomplete
             size="small"
             disablePortal
-            id="combo-box-demo"
             options={["male", "female"]}
-            onSelect={(e) => handleChange('gender', e.target.value)}
+            value={filters.gender || null}
+            onChange={(e, value) => handleChange('gender', value || '')}
             className="w-full"
             renderInput={(params) => <TextField {...params} fullWidth label="Gender" className="capitalize" />}
           />
           <Autocomplete
             size="small"
             disablePortal
-            id="combo-box-demo"
-            onSelect={(e) => handleChange('martialStatus', e.target.value)}
+            value={filters.martialStatus || null}
+            onChange={(e, value) => handleChange('martialStatus', value || '')}
             options={["married", "single"]}
             className="w-full"
             renderInput={(params) => <TextField {...params} fullWidth label="Martial Status"  className="capitalize"/>}
           />
           <div className="flex gap-4 justify-end">
             <button
-              variant="contained"
+              type="button"
+              onClick={handleReset}
               className="bg-[#d7d7d7] px-4 py-2 rounded-lg text-gray-500 mt-4 hover:text-white hover:bg-[#6c757d] border-[2px] border-[#efeeee] hover:border-[#d7d7d7] font-thin transition-all">
               Reset
             </button>

@@ -140,7 +140,7 @@ const Clients = () => {
       renderCell: (params) => (
         <div className="flex gap-[10px]">
           {
-            loggedUser?.role != 'employee' &&
+            loggedUser?.role === 'super_admin' &&
             <Tooltip placement="top" title="Delete" arrow>
               {" "}
               <PiTrashLight

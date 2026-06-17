@@ -46,6 +46,18 @@ export const verifyManager = (req, res, next) => {
     }
 };
 
+export const verifyIsSameUser = (req, res, next) => {
+    try {
+        const { userId } = req.params;
+        if (req.user._id.toString() !== userId) {
+            return next(createError(403, 'You can only access your own profile'));
+        }
+        next();
+    } catch (err) {
+        next(createError(500, err.message));
+    }
+};
+
 export const verifySuperAdmin = (req, res, next) => {
     try {
         verifyToken(req, res, () => {
